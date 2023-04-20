@@ -39,7 +39,7 @@ exports.getById = async (req, res) => {
   try {
     const course = await Course.findById(id)
       .populate('professor', 'nom')
-      .populate('students', 'nom');
+      .populate('student', 'nom');
     if (!course) throw new Error('Course not found');
     course.save();
     res.status(200).json(course);
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
   try {
     const course = await Course.findByIdAndUpdate(id, { nom, professor }, { new: true })
       .populate('professor', 'nom')
-      .populate('students', 'nom');
+      .populate('student', 'nom');
     if (!course) throw new Error('Course not found');
     course.save();
     res.status(200).json(course);
