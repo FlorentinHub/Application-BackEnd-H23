@@ -101,55 +101,33 @@ async function VerifProfesseur(profId) {
   return rep;
 }
 
-// const ajouterCours = async (requete, reponse, next) => {
-//   const { cours } = requete.body;
-//   const professeurId = requete.params.professeurId;
-//   let professeur, course;
-//   professeur = await Prof.findById(professeurId);
-
-//   if (!professeur) {
-//     return next(new HttpErreur("Impossible de trouver Le professeur", 404));
-//   }
-
-//   course = await Cours.findById(cours);
-
-//   if (!course) {
-//     return next(new HttpErreur("Impossible de trouver le cours", 404));
-//   }
-
-//   try {
-//     professeur.cours.push(cours);
-//     course.professeur.push(professeur);
-
-//     await professeur.save();
-//     await course.save();
-//   } catch {
-//     new HttpErreur("Erreur lors de l'ajout de cours", 500);
-//   }
-
-//   reponse.status(200).json({ professeur: professeur.toObject({ getters: true }) });
-// };
-
 const ajouterCours = async (requete, reponse, next) => {
   const { cours } = requete.body;
-  const professeurId = requete.params.professeurId;
+  const professorId = requete.params.id;
+  let professeur, course;
+  professeur = await Prof.findById(professorId);
+  
+  if (!professeur) {
+    return next(new HttpErreur("Impossible de trouver Le professeur", 404));
+  }
 
-  let professeur;
+  course = await Cours.findById(cours);
+
+  if (!course) {
+    return next(new HttpErreur("Impossible de trouver le cours", 404));
+  }
 
   try {
-    // Ajouter un professeur a un cours
-    professeur = await Professeur.findById(professeurId);
-
     professeur.cours.push(cours);
+    course.professeur.push(professeur);
 
     await professeur.save();
+    await course.save();
   } catch {
     new HttpErreur("Erreur lors de l'ajout de cours", 500);
   }
 
-  reponse
-    .status(200)
-    // .json({ professeur: professeur.toObject({ getters: true }) });
+  reponse.status(200).json({ professeur: professeur.toObject({ getters: true }) });
 };
 
 exports.getById = getById;
