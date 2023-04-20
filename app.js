@@ -1,13 +1,10 @@
-// const express = require('express');
-// const bodyParser = require('body-parser');
+//const express = require('express');
 
 // const placesRoutes = require("./routes/places-routes")
 // const utilisateursRoutes = require("./routes/utilisateurs-routes")
 // const HttpErreur = require("./models/http-erreur");
 
 // const app = express();
-
-// app.use(bodyParser.json());
 
 // app.use("/api/places", placesRoutes);
 // app.use("/api/utilisateurs", utilisateursRoutes);
@@ -25,25 +22,26 @@
 // })
 
 
-
 // app.listen(5000);
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 // Créer l'application Express
 const app = express();
+app.use(bodyParser.json());
 
 // Définir le port d'écoute
-const port = 3000;
+const port = 3001;
 
 // Configurer la connexion à MongoDB avec Mongoose
-mongoose.connect('mongodb://localhost:27017/college', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://127.0.0.1:27017/college', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connecté à MongoDB'))
   .catch(err => console.error('Une erreur est survenue en se connectant à MongoDB', err));
 
 // // Définir les routes pour les cours
-// const courseRoutes = require('./routes/coursesRoutes');
-// app.use('/courses', courseRoutes);
+const courseRoutes = require('./routes/courseRoutes');
+app.use('/cours', courseRoutes);
 
 // Définir les routes pour les professeurs
 const professorRoutes = require('./routes/professorRoutes');
